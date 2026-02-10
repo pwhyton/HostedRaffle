@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Organisation {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  logoUrl         String?
+  primaryColour   String   @default("#4F46E5")
+  secondaryColour String   @default("#10B981")
+  customText      String?  // JSON string
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  users           User[]
+  raffles         Raffle[]
+}
+
+model User {
+  id             String        @id @default(cuid())
+  email          String        @unique
+  passwordHash   String
+  name           String
+  role           String        @default("org_admin") // super_admin | org_admin
+  organisationId String?
+  organisation   Organisation? @relation(fields: [organisationId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Raffle {
+  id             String       @id @default(cuid())
+  organisationId String
+  organisation   Organisation @relation(fields: [organisationId], references: [id])
+  title          String
+  description    String
+  prizeInfo      String
+  ticketPrice    Float
+  maxTickets     Int
+  drawDate       DateTime
+  status         String       @default("draft") // draft | active | drawn | cancelled
+  tickets        Ticket[]
+  winners        Winner[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Ticket {
+  id           String   @id @default(cuid())
+  raffleId     String
+  raffle       Raffle   @relation(fields: [raffleId], references: [id])
+  ticketNumber String
+  buyerName    String
+  buyerEmail   String
+  winner       Winner?
+  createdAt    DateTime @default(now())
+
+  @@unique([raffleId, ticketNumber])
+}
+
+model Winner {
+  id        String   @id @default(cuid())
+  raffleId  String
+  raffle    Raffle   @relation(fields: [raffleId], references: [id])
+  ticketId  String   @unique
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  prizeRank Int
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
