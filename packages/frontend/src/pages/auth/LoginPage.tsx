@@ -40,7 +40,7 @@ export default function LoginPage() {
               type="email"
               {...register('email')}
               className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="admin@raffletickets.com"
+              placeholder="admin@myorganisation.com"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
           </div>

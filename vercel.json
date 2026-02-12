@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npx prisma generate --schema=packages/backend/prisma/schema.prisma && npm run build -w packages/frontend",
+  "outputDirectory": "packages/frontend/dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/((?!api).*)", "destination": "/index.html" }
+  ]
+}
