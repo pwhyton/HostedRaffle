@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npx prisma generate --schema=packages/backend/prisma/schema.prisma && npm run build -w packages/frontend",
+  "buildCommand": "pnpm dlx prisma generate --schema=packages/backend/prisma/schema.prisma && pnpm --filter @raffle/frontend build",
   "outputDirectory": "packages/frontend/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
