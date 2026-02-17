@@ -16,30 +16,31 @@ You just need to set up the infrastructure.
 Turso is a cloud-hosted SQLite-compatible database (Vercel has no persistent filesystem, so the local `dev.db` won't work there).
 
 1. Sign up at [turso.tech](https://turso.tech)
-2. Install the Turso CLI:
-   ```bash
-   # Windows (via scoop)
-   scoop install turso
+2. Create a database from the **Turso dashboard** or using the CLI:
 
-   # Or via npm
-   npm install -g @turso/cli
-   ```
-3. Log in:
+   **Option A — Web Dashboard (recommended for Windows):**
+   - Go to your Turso dashboard and create a new database named `raffle-tickets`
+   - Copy the **Database URL** (e.g. `libsql://raffle-tickets-yourname.turso.io`)
+   - Generate an **Auth Token** from the database settings and copy it
+
+   **Option B — Turso CLI (macOS / Linux only):**
    ```bash
+   # Install (macOS)
+   brew install tursodatabase/tap/turso
+
+   # Install (Linux)
+   curl -sSfL https://get.tur.so/install.sh | bash
+
+   # Log in and create the database
    turso auth login
-   ```
-4. Create a database:
-   ```bash
    turso db create raffle-tickets
-   ```
-5. Get the connection URL and auth token — save both for later:
-   ```bash
-   turso db show raffle-tickets --url
-   # e.g. libsql://raffle-tickets-yourname.turso.io
 
+   # Get connection URL and auth token
+   turso db show raffle-tickets --url
    turso db tokens create raffle-tickets
-   # e.g. eyJhbGciOi...
    ```
+
+   > **Note:** The Turso CLI does not have a native Windows build. On Windows, use the web dashboard or run the CLI through WSL.
 
 ## Step 2: Push Schema & Seed Data to Turso
 
@@ -60,7 +61,11 @@ npm run seed -w packages/backend
 Verify the data is in Turso:
 
 ```bash
+# Using the CLI (macOS/Linux)
 turso db shell raffle-tickets "SELECT * FROM User;"
+
+# Or test via the API
+curl https://your-app.vercel.app/api/public/springfield-school
 ```
 
 Once confirmed, you can comment the Turso env vars back out in `.env` so local dev continues using the SQLite file.
