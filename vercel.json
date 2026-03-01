@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm exec prisma generate --schema=packages/backend/prisma/schema.prisma && pnpm --filter @raffle/frontend build",
+  "buildCommand": "pnpm --filter @raffle/backend exec prisma generate && pnpm --filter @raffle/frontend build",
   "outputDirectory": "packages/frontend/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
