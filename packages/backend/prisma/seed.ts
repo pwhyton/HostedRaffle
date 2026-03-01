@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { prisma } from '../src/db.js';
 import { hashPassword } from '../src/utils/password.js';
 
