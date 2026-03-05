@@ -1,6 +1,7 @@
 {
   "name": "raffle-tickets",
   "private": true,
+  "type": "module",
   "workspaces": [
     "packages/shared",
     "packages/backend",
